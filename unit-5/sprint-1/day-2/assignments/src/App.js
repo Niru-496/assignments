@@ -18,8 +18,10 @@ function App() {
 			<ul>
 				{mobManf.map((e) => {
 					return tempContent(e);
-				})};
+				})}
+				;
 			</ul>
+			<h1>Working in Deployent fine</h1>
 		</div>
   );
 }
