@@ -20,6 +20,9 @@ function Test(){
                     }
                     changer(-1)
                 } }> Remove By 1</button>
+                <button onClick={ () => {
+                    setCounter(counter*2)
+                } }>Double count</button>
             </div>
 
         </div>
