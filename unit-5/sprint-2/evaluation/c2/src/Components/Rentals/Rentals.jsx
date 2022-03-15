@@ -1,922 +1,124 @@
 import "./Rentals.css";
-import {useState} from "react"
-
-
-
-
-
-
+import { useState, useEffect } from "react";
+import axios from "axios";
 export const Rentals = () => {
+	const [data, setData] = useState([]);
+	const [filter, setFilter] = useState([]);
+	useEffect(() => {
+		getData();
+	}, []);
 
+	const getData = async () => {
+		const res = await axios.get("http://localhost:8080/houses");
+		setData(res.data);
+	};
 
-  // const [arr,Setarr] = useState({
+	const sortById = async () => {
+		let newData = data.sort((a, b) => {
+			return b.id - a.id;
+		});
+		setData([...newData]);
+	};
+	const rentLow = async () => {
+		let newData = data.sort((a, b) => {
+			return a.rent - b.rent;
+		});
+		setData([...newData]);
+	};
 
-  // })
+	const rentHigh = async () => {
+		let newData = data.sort((a, b) => {
+			return b.rent - a.rent;
+		});
+		setData([...newData]);
+	};
 
-  // const sort = (arr) => {
-	// 	arr.sort(function (a, b) {
-	// 		return a - b;
-	// 	});
-	// 	Setarr(arr);
-  // };
-  return (
-    <div className="rentalContainer">
-      <div className="sortingButtons">
-        <button className="sortById">Sort by ID</button>
-        <button className="sortByRentAsc">Rent Low to high</button>
-        <button className="sortByRentDesc">Rent High to low</button>
-        <button className="sortByAreaAsc">Area Low to high</button>
-        <button className="sortByAreaDesc">Area High to Low</button>
-      </div>
-      <input
-        className="searchAddress"
-        type="text"
-        placeholder="Search Address"
-      />
-      <table className="table" border="1">
-        <thead>
-          <tr>
-            <th>Sl.no.</th>
-            <th>Name</th>
-            <th>Owner Name</th>
-            <th>Address</th>
-            <th>Area Code</th>
-            <th>Rent</th>
-            <th>Available For</th>
-            <th>Image</th>
-          </tr>
-        </thead>
-        <tbody>
-          {arr.map((house, index) => {
-            return (
-              <tr key={house.id} className="houseDetails">
-                <td className="houseId">{house.id}</td>
-                <td className="houseName">{house.name} </td>
-                <td className="ownersName">{house.ownerName}</td>
-                <td className="address">{house.address}</td>
-                <td className="areaCode">{house.areaCode}</td>
-                <td className="rent">{house.rent}</td>
-                <td className="preferredTenants">
-                  {/* Show text Both or Bachelors or Married based on values */}
-                </td>
-                <td className="houseImage">
-                  <img src={house.image} alt="house" />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
+	const areaLow = async () => {
+		let newData = data.sort((a, b) => {
+			return a.areaCode - b.areaCode;
+		});
+		setData([...newData]);
+	};
+	const areaHigh = async () => {
+		let newData = data.sort((a, b) => {
+			return b.areaCode - a.areaCode;
+		});
+		setData([...newData]);
+	};
+
+	const filterData = (val) => {
+		let newData = data.filter((el) => {
+			return el.address === val;
+		});
+		setData([...newData]);
+	};
+
+	return (
+		<div className="rentalContainer">
+			<div className="sortingButtons">
+				<button onClick={sortById} className="sortById">
+					Sort by ID
+				</button>
+				<button onClick={rentLow} className="sortByRentAsc">
+					Rent Low to high
+				</button>
+				<button onClick={rentHigh} className="sortByRentDesc">
+					Rent High to low
+				</button>
+				<button onClick={areaLow} className="sortByAreaAsc">
+					Area Low to high
+				</button>
+				<button onClick={areaHigh} className="sortByAreaDesc">
+					Area High to Low
+				</button>
+			</div>
+			<input
+				onChange={(e) => setFilter(e.target.value)}
+				className="searchAddress"
+				type="text"
+				placeholder="Search Address"
+			/>
+			<button onClick={() => filterData(filter)}>Filter</button>
+			<table className="table" border="1">
+				<thead>
+					<tr>
+						<th>Sl.no.</th>
+						<th>Name</th>
+						<th>Owner Name</th>
+						<th>Address</th>
+						<th>Area Code</th>
+						<th>Rent</th>
+						<th>Available For</th>
+						<th>Image</th>
+					</tr>
+				</thead>
+				<tbody>
+					{data.map((house, index) => {
+						return (
+							<tr key={house.id} className="houseDetails">
+								<td className="houseId">{house.id}</td>
+								<td className="houseName">{house.name} </td>
+								<td className="ownersName">
+									{house.ownerName}
+								</td>
+								<td className="address">{house.address}</td>
+								<td className="areaCode">{house.areaCode}</td>
+								<td className="rent">{house.rent}</td>
+								<td className="preferredTenants">
+									{house.bachelor
+										? house.married
+											? "Married and Bachelor"
+											: "Bachelor"
+										: "Married"}
+								</td>
+								<td className="houseImage">
+									<img src={house.image} alt="house" />
+								</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		</div>
+	);
 };
-
-
-const arr = [
-	{
-		id: 1,
-		name: "Blair",
-		ownerName: "Blair Farans",
-		address: "5 Thompson Park",
-		rent: 5585,
-		image: "http://dummyimage.com/152x100.png/cc0000/ffffff",
-	},
-	{
-		id: 2,
-		name: "Penny",
-		ownerName: "Penny Sandes",
-		address: "40883 Starling Road",
-		areaCode: "L-9674",
-		rent: 2314,
-		image: "http://dummyimage.com/201x100.png/dddddd/000000",
-	},
-	{
-		id: 3,
-		name: "Wallie",
-		ownerName: "Wallie Saltsberger",
-		address: "4306 School Circle",
-		areaCode: "00174",
-		rent: 4613,
-		image: "http://dummyimage.com/165x100.png/ff4444/ffffff",
-	},
-	{
-		id: 4,
-		name: "Osmond",
-		ownerName: "Osmond Nodin",
-		address: "395 Haas Hill",
-		rent: 5341,
-		image: "http://dummyimage.com/141x100.png/ff4444/ffffff",
-	},
-	{
-		id: 5,
-		name: "Charleen",
-		ownerName: "Charleen Sedgeworth",
-		address: "8 Mcguire Drive",
-		areaCode: "102085",
-		rent: 8619,
-		image: "http://dummyimage.com/210x100.png/ff4444/ffffff",
-	},
-	{
-		id: 6,
-		name: "Prinz",
-		ownerName: "Prinz Pipes",
-		address: "68 Melvin Way",
-		rent: 5349,
-		image: "http://dummyimage.com/196x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 7,
-		name: "Crissie",
-		ownerName: "Crissie Esposi",
-		address: "1 Atwood Trail",
-		rent: 5836,
-		image: "http://dummyimage.com/140x100.png/ff4444/ffffff",
-	},
-	{
-		id: 8,
-		name: "Mathias",
-		ownerName: "Mathias Coule",
-		address: "15310 Hagan Place",
-		areaCode: "FRN",
-		rent: 6529,
-		image: "http://dummyimage.com/206x100.png/ff4444/ffffff",
-	},
-	{
-		id: 9,
-		name: "Jo",
-		ownerName: "Jo Duling",
-		address: "5353 West Street",
-		areaCode: "48670",
-		rent: 6219,
-		image: "http://dummyimage.com/108x100.png/ff4444/ffffff",
-	},
-	{
-		id: 10,
-		name: "Trenton",
-		ownerName: "Trenton Pfaffel",
-		address: "09 Paget Lane",
-		areaCode: "8420",
-		rent: 4626,
-		image: "http://dummyimage.com/111x100.png/ff4444/ffffff",
-	},
-	{
-		id: 11,
-		name: "Leigh",
-		ownerName: "Leigh Bridewell",
-		address: "4 Riverside Court",
-		rent: 3559,
-		image: "http://dummyimage.com/158x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 12,
-		name: "Meridel",
-		ownerName: "Meridel Anthona",
-		address: "52 Heffernan Avenue",
-		rent: 1997,
-		image: "http://dummyimage.com/114x100.png/dddddd/000000",
-	},
-	{
-		id: 13,
-		name: "Chilton",
-		ownerName: "Chilton Strachan",
-		address: "4047 Schurz Plaza",
-		areaCode: "956-0053",
-		rent: 5938,
-		image: "http://dummyimage.com/188x100.png/dddddd/000000",
-	},
-	{
-		id: 14,
-		name: "Ruthy",
-		ownerName: "Ruthy Aluard",
-		address: "5380 Eliot Junction",
-		rent: 4074,
-		image: "http://dummyimage.com/104x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 15,
-		name: "Virgina",
-		ownerName: "Virgina Swyndley",
-		address: "480 Bay Way",
-		areaCode: "301420",
-		rent: 1291,
-		image: "http://dummyimage.com/166x100.png/ff4444/ffffff",
-	},
-	{
-		id: 16,
-		name: "Merola",
-		ownerName: "Merola Coom",
-		address: "83839 Grim Crossing",
-		areaCode: "45600",
-		rent: 6393,
-		image: "http://dummyimage.com/114x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 17,
-		name: "Adria",
-		ownerName: "Adria Wathell",
-		address: "6 Summerview Way",
-		areaCode: "899-3515",
-		rent: 3023,
-		image: "http://dummyimage.com/222x100.png/cc0000/ffffff",
-	},
-	{
-		id: 18,
-		name: "Adelaide",
-		ownerName: "Adelaide Baylis",
-		address: "63 Prentice Street",
-		rent: 3163,
-		image: "http://dummyimage.com/202x100.png/dddddd/000000",
-	},
-	{
-		id: 19,
-		name: "Marcos",
-		ownerName: "Marcos Tamburi",
-		address: "9 2nd Circle",
-		rent: 7568,
-		image: "http://dummyimage.com/151x100.png/cc0000/ffffff",
-	},
-	{
-		id: 20,
-		name: "Harry",
-		ownerName: "Harry Fortie",
-		address: "01153 Scott Trail",
-		rent: 8043,
-		image: "http://dummyimage.com/231x100.png/cc0000/ffffff",
-	},
-	{
-		id: 21,
-		name: "Vita",
-		ownerName: "Vita Erlam",
-		address: "5 Tennyson Circle",
-		rent: 5147,
-		image: "http://dummyimage.com/142x100.png/cc0000/ffffff",
-	},
-	{
-		id: 22,
-		name: "Robby",
-		ownerName: "Robby Duinkerk",
-		address: "35237 Valley Edge Trail",
-		areaCode: "301088",
-		rent: 7104,
-		image: "http://dummyimage.com/180x100.png/cc0000/ffffff",
-	},
-	{
-		id: 23,
-		name: "Nicky",
-		ownerName: "Nicky Vigietti",
-		address: "73151 Tennessee Pass",
-		areaCode: "4620-472",
-		rent: 3521,
-		image: "http://dummyimage.com/188x100.png/cc0000/ffffff",
-	},
-	{
-		id: 24,
-		name: "Carlynn",
-		ownerName: "Carlynn Carbonell",
-		address: "51239 Pepper Wood Crossing",
-		rent: 6548,
-		image: "http://dummyimage.com/237x100.png/dddddd/000000",
-	},
-	{
-		id: 25,
-		name: "Beverlie",
-		ownerName: "Beverlie Harrowell",
-		address: "90687 Scofield Way",
-		areaCode: "3025-353",
-		rent: 2474,
-		image: "http://dummyimage.com/191x100.png/dddddd/000000",
-	},
-	{
-		id: 26,
-		name: "Ferrel",
-		ownerName: "Ferrel Stotherfield",
-		address: "4928 David Plaza",
-		rent: 9033,
-		image: "http://dummyimage.com/109x100.png/dddddd/000000",
-	},
-	{
-		id: 27,
-		name: "Leeland",
-		ownerName: "Leeland Hare",
-		address: "6 Stuart Parkway",
-		areaCode: "64-300",
-		rent: 9630,
-		image: "http://dummyimage.com/170x100.png/dddddd/000000",
-	},
-	{
-		id: 28,
-		name: "Kayne",
-		ownerName: "Kayne Champe",
-		address: "17118 Northview Place",
-		rent: 3352,
-		image: "http://dummyimage.com/240x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 29,
-		name: "Davy",
-		ownerName: "Davy Orteau",
-		address: "487 Union Street",
-		rent: 4654,
-		image: "http://dummyimage.com/218x100.png/cc0000/ffffff",
-	},
-	{
-		id: 30,
-		name: "Lise",
-		ownerName: "Lise Zecchi",
-		address: "2 Alpine Way",
-		areaCode: "3450-205",
-		rent: 2334,
-		image: "http://dummyimage.com/226x100.png/ff4444/ffffff",
-	},
-	{
-		id: 31,
-		name: "Aloisia",
-		ownerName: "Aloisia Poznan",
-		address: "4 Lunder Plaza",
-		areaCode: "44220-000",
-		rent: 1961,
-		image: "http://dummyimage.com/216x100.png/ff4444/ffffff",
-	},
-	{
-		id: 32,
-		name: "Rafferty",
-		ownerName: "Rafferty Lisimore",
-		address: "0593 Eagan Point",
-		rent: 9988,
-		image: "http://dummyimage.com/136x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 33,
-		name: "Lesly",
-		ownerName: "Lesly Tribell",
-		address: "12467 Nevada Center",
-		rent: 5689,
-		image: "http://dummyimage.com/206x100.png/ff4444/ffffff",
-	},
-	{
-		id: 34,
-		name: "Gabriell",
-		ownerName: "Gabriell Cabbell",
-		address: "57183 Coleman Street",
-		rent: 4168,
-		image: "http://dummyimage.com/179x100.png/cc0000/ffffff",
-	},
-	{
-		id: 35,
-		name: "Yoshi",
-		ownerName: "Yoshi Despenser",
-		address: "21 International Trail",
-		areaCode: "999-3145",
-		rent: 1188,
-		image: "http://dummyimage.com/106x100.png/cc0000/ffffff",
-	},
-	{
-		id: 36,
-		name: "Stacy",
-		ownerName: "Stacy Mustill",
-		address: "261 Village Green Court",
-		rent: 5853,
-		image: "http://dummyimage.com/209x100.png/ff4444/ffffff",
-	},
-	{
-		id: 37,
-		name: "Lynna",
-		ownerName: "Lynna Reimer",
-		address: "01440 Crescent Oaks Pass",
-		areaCode: "4411",
-		rent: 8771,
-		image: "http://dummyimage.com/175x100.png/cc0000/ffffff",
-	},
-	{
-		id: 38,
-		name: "Benton",
-		ownerName: "Benton Tocknell",
-		address: "776 Bashford Road",
-		rent: 7350,
-		image: "http://dummyimage.com/186x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 39,
-		name: "Lilla",
-		ownerName: "Lilla March",
-		address: "03 Hansons Plaza",
-		areaCode: "433 68",
-		rent: 5592,
-		image: "http://dummyimage.com/154x100.png/ff4444/ffffff",
-	},
-	{
-		id: 40,
-		name: "Leanora",
-		ownerName: "Leanora Vinick",
-		address: "577 Clove Road",
-		areaCode: "999-8531",
-		rent: 1790,
-		image: "http://dummyimage.com/215x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 41,
-		name: "Noby",
-		ownerName: "Noby Bodechon",
-		address: "939 Scoville Lane",
-		areaCode: "2680-423",
-		rent: 1947,
-		image: "http://dummyimage.com/170x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 42,
-		name: "Horton",
-		ownerName: "Horton Drust",
-		address: "0 Butterfield Point",
-		rent: 5324,
-		image: "http://dummyimage.com/123x100.png/ff4444/ffffff",
-	},
-	{
-		id: 43,
-		name: "Leshia",
-		ownerName: "Leshia Giacopello",
-		address: "30 5th Pass",
-		rent: 8035,
-		image: "http://dummyimage.com/160x100.png/ff4444/ffffff",
-	},
-	{
-		id: 44,
-		name: "Odell",
-		ownerName: "Odell Park",
-		address: "5719 Laurel Street",
-		areaCode: "5140-058",
-		rent: 2536,
-		image: "http://dummyimage.com/189x100.png/ff4444/ffffff",
-	},
-	{
-		id: 45,
-		name: "Rey",
-		ownerName: "Rey Kynsey",
-		address: "29665 Declaration Avenue",
-		rent: 6803,
-		image: "http://dummyimage.com/197x100.png/ff4444/ffffff",
-	},
-	{
-		id: 46,
-		name: "Lauryn",
-		ownerName: "Lauryn Pittford",
-		address: "082 Ludington Terrace",
-		areaCode: "52150",
-		rent: 7500,
-		image: "http://dummyimage.com/151x100.png/ff4444/ffffff",
-	},
-	{
-		id: 47,
-		name: "Dedie",
-		ownerName: "Dedie Thwaites",
-		address: "319 Tony Trail",
-		rent: 1802,
-		image: "http://dummyimage.com/172x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 48,
-		name: "Charmaine",
-		ownerName: "Charmaine Brymner",
-		address: "115 Northport Court",
-		areaCode: "443544",
-		rent: 1903,
-		image: "http://dummyimage.com/242x100.png/ff4444/ffffff",
-	},
-	{
-		id: 49,
-		name: "Lise",
-		ownerName: "Lise Sevitt",
-		address: "650 Onsgard Plaza",
-		areaCode: "68400-000",
-		rent: 3210,
-		image: "http://dummyimage.com/149x100.png/dddddd/000000",
-	},
-	{
-		id: 50,
-		name: "Ashlin",
-		ownerName: "Ashlin Rubertis",
-		address: "67761 Fairview Street",
-		rent: 3964,
-		image: "http://dummyimage.com/178x100.png/dddddd/000000",
-	},
-	{
-		id: 51,
-		name: "Heloise",
-		ownerName: "Heloise Gaudin",
-		address: "3 Dexter Circle",
-		rent: 4371,
-		image: "http://dummyimage.com/137x100.png/dddddd/000000",
-	},
-	{
-		id: 52,
-		name: "Leonidas",
-		ownerName: "Leonidas Buckett",
-		address: "65 Artisan Pass",
-		rent: 1498,
-		image: "http://dummyimage.com/150x100.png/dddddd/000000",
-	},
-	{
-		id: 53,
-		name: "Ulrika",
-		ownerName: "Ulrika Stamper",
-		address: "72696 Green Junction",
-		areaCode: "94150",
-		rent: 6776,
-		image: "http://dummyimage.com/109x100.png/cc0000/ffffff",
-	},
-	{
-		id: 54,
-		name: "Candie",
-		ownerName: "Candie Mullinder",
-		address: "48 Manley Crossing",
-		areaCode: "422840",
-		rent: 8981,
-		image: "http://dummyimage.com/133x100.png/dddddd/000000",
-	},
-	{
-		id: 55,
-		name: "Herculie",
-		ownerName: "Herculie Soal",
-		address: "97575 Village Green Way",
-		rent: 6729,
-		image: "http://dummyimage.com/250x100.png/dddddd/000000",
-	},
-	{
-		id: 56,
-		name: "Sylvia",
-		ownerName: "Sylvia Clethro",
-		address: "0107 Del Sol Terrace",
-		areaCode: "1470",
-		rent: 2652,
-		image: "http://dummyimage.com/158x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 57,
-		name: "Florance",
-		ownerName: "Florance Hatchman",
-		address: "60 Melrose Alley",
-		rent: 5991,
-		image: "http://dummyimage.com/197x100.png/ff4444/ffffff",
-	},
-	{
-		id: 58,
-		name: "Barnett",
-		ownerName: "Barnett Sabathe",
-		address: "49 Iowa Park",
-		rent: 9007,
-		image: "http://dummyimage.com/113x100.png/ff4444/ffffff",
-	},
-	{
-		id: 59,
-		name: "Eolande",
-		ownerName: "Eolande Dyers",
-		address: "75447 Center Avenue",
-		areaCode: "45032 CEDEX 1",
-		rent: 6882,
-		image: "http://dummyimage.com/238x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 60,
-		name: "Estella",
-		ownerName: "Estella Simonutti",
-		address: "689 Pond Junction",
-		rent: 1286,
-		image: "http://dummyimage.com/125x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 61,
-		name: "Raoul",
-		ownerName: "Raoul Bagster",
-		address: "3 Graceland Crossing",
-		rent: 3414,
-		image: "http://dummyimage.com/104x100.png/dddddd/000000",
-	},
-	{
-		id: 62,
-		name: "Rowen",
-		ownerName: "Rowen Gaisford",
-		address: "64 Dottie Junction",
-		rent: 7399,
-		image: "http://dummyimage.com/236x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 63,
-		name: "Florida",
-		ownerName: "Florida Joubert",
-		address: "7723 Crescent Oaks Road",
-		rent: 1395,
-		image: "http://dummyimage.com/208x100.png/ff4444/ffffff",
-	},
-	{
-		id: 64,
-		name: "Maxy",
-		ownerName: "Maxy Sammonds",
-		address: "6505 Harbort Lane",
-		rent: 7263,
-		image: "http://dummyimage.com/124x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 65,
-		name: "Alvera",
-		ownerName: "Alvera Millward",
-		address: "748 Homewood Junction",
-		rent: 6343,
-		image: "http://dummyimage.com/167x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 66,
-		name: "Vincenty",
-		ownerName: "Vincenty McNeigh",
-		address: "650 American Ash Crossing",
-		areaCode: "96220",
-		rent: 7646,
-		image: "http://dummyimage.com/141x100.png/ff4444/ffffff",
-	},
-	{
-		id: 67,
-		name: "Ginni",
-		ownerName: "Ginni Ducker",
-		address: "61 Thompson Center",
-		areaCode: "4396",
-		rent: 5636,
-		image: "http://dummyimage.com/219x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 68,
-		name: "Justen",
-		ownerName: "Justen Pickring",
-		address: "027 Russell Point",
-		areaCode: "76105",
-		rent: 9068,
-		image: "http://dummyimage.com/161x100.png/ff4444/ffffff",
-	},
-	{
-		id: 69,
-		name: "Bradford",
-		ownerName: "Bradford Itchingham",
-		address: "0952 Grayhawk Hill",
-		areaCode: "2612",
-		rent: 2824,
-		image: "http://dummyimage.com/135x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 70,
-		name: "Hendrik",
-		ownerName: "Hendrik Rowswell",
-		address: "68609 Bartillon Point",
-		areaCode: "9297",
-		rent: 2655,
-		image: "http://dummyimage.com/202x100.png/ff4444/ffffff",
-	},
-	{
-		id: 71,
-		name: "Franny",
-		ownerName: "Franny Straughan",
-		address: "98589 Lakewood Road",
-		areaCode: "5850",
-		rent: 3267,
-		image: "http://dummyimage.com/126x100.png/cc0000/ffffff",
-	},
-	{
-		id: 72,
-		name: "Dougie",
-		ownerName: "Dougie Kondratyuk",
-		address: "036 Melody Street",
-		rent: 5880,
-		image: "http://dummyimage.com/237x100.png/dddddd/000000",
-	},
-	{
-		id: 73,
-		name: "Bonita",
-		ownerName: "Bonita Bonsale",
-		address: "84209 Randy Place",
-		rent: 7957,
-		image: "http://dummyimage.com/207x100.png/cc0000/ffffff",
-	},
-	{
-		id: 74,
-		name: "Adamo",
-		ownerName: "Adamo Huitson",
-		address: "7 Bashford Park",
-		rent: 6594,
-		image: "http://dummyimage.com/246x100.png/cc0000/ffffff",
-	},
-	{
-		id: 75,
-		name: "Frannie",
-		ownerName: "Frannie Dowell",
-		address: "1 Arrowood Road",
-		areaCode: "S9A",
-		rent: 7806,
-		image: "http://dummyimage.com/195x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 76,
-		name: "Andie",
-		ownerName: "Andie Aitcheson",
-		address: "43 Walton Plaza",
-		areaCode: "62200-000",
-		rent: 2397,
-		image: "http://dummyimage.com/115x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 77,
-		name: "Tabbi",
-		ownerName: "Tabbi Zotto",
-		address: "6415 Linden Avenue",
-		areaCode: "5247",
-		rent: 5756,
-		image: "http://dummyimage.com/189x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 78,
-		name: "Jehanna",
-		ownerName: "Jehanna Whisker",
-		address: "12 Porter Avenue",
-		rent: 7715,
-		image: "http://dummyimage.com/181x100.png/dddddd/000000",
-	},
-	{
-		id: 79,
-		name: "Marie",
-		ownerName: "Marie Upson",
-		address: "5 Prentice Park",
-		rent: 8786,
-		image: "http://dummyimage.com/134x100.png/dddddd/000000",
-	},
-	{
-		id: 80,
-		name: "Ozzy",
-		ownerName: "Ozzy Colvill",
-		address: "1 Mariners Cove Center",
-		areaCode: "91505",
-		rent: 1107,
-		image: "http://dummyimage.com/149x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 81,
-		name: "Mycah",
-		ownerName: "Mycah Woolston",
-		address: "2434 Schiller Point",
-		areaCode: "735 41",
-		rent: 7592,
-		image: "http://dummyimage.com/237x100.png/cc0000/ffffff",
-	},
-	{
-		id: 82,
-		name: "Corine",
-		ownerName: "Corine Cheatle",
-		address: "5907 Truax Way",
-		rent: 1964,
-		image: "http://dummyimage.com/181x100.png/cc0000/ffffff",
-	},
-	{
-		id: 83,
-		name: "Lothario",
-		ownerName: "Lothario Dinsmore",
-		address: "791 Longview Circle",
-		areaCode: "2750-109",
-		rent: 6938,
-		image: "http://dummyimage.com/164x100.png/cc0000/ffffff",
-	},
-	{
-		id: 84,
-		name: "Ellie",
-		ownerName: "Ellie Burrus",
-		address: "822 Loftsgordon Way",
-		rent: 2456,
-		image: "http://dummyimage.com/151x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 85,
-		name: "Karlen",
-		ownerName: "Karlen Birts",
-		address: "37 Bayside Hill",
-		rent: 4783,
-		image: "http://dummyimage.com/233x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 86,
-		name: "Bucky",
-		ownerName: "Bucky Duffield",
-		address: "190 Farwell Center",
-		areaCode: "97254 CEDEX",
-		rent: 9247,
-		image: "http://dummyimage.com/104x100.png/cc0000/ffffff",
-	},
-	{
-		id: 87,
-		name: "Miner",
-		ownerName: "Miner Grcic",
-		address: "63 Butterfield Terrace",
-		areaCode: "367-0251",
-		rent: 2158,
-		image: "http://dummyimage.com/198x100.png/ff4444/ffffff",
-	},
-	{
-		id: 88,
-		name: "Waverley",
-		ownerName: "Waverley Wortt",
-		address: "276 Melrose Terrace",
-		rent: 5385,
-		image: "http://dummyimage.com/133x100.png/cc0000/ffffff",
-	},
-	{
-		id: 89,
-		name: "Brocky",
-		ownerName: "Brocky Sloam",
-		address: "58 Eagle Crest Hill",
-		rent: 6750,
-		image: "http://dummyimage.com/232x100.png/ff4444/ffffff",
-	},
-	{
-		id: 90,
-		name: "Elie",
-		ownerName: "Elie Craythorn",
-		address: "5722 Everett Avenue",
-		rent: 2889,
-		image: "http://dummyimage.com/165x100.png/cc0000/ffffff",
-	},
-	{
-		id: 91,
-		name: "Emlynn",
-		ownerName: "Emlynn Tarver",
-		address: "2099 Summit Drive",
-		rent: 6393,
-		image: "http://dummyimage.com/100x100.png/ff4444/ffffff",
-	},
-	{
-		id: 92,
-		name: "Kerrin",
-		ownerName: "Kerrin Eustace",
-		address: "34710 Lillian Hill",
-		rent: 9415,
-		image: "http://dummyimage.com/101x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 93,
-		name: "Cymbre",
-		ownerName: "Cymbre Gouldie",
-		address: "427 Westport Terrace",
-		rent: 1329,
-		image: "http://dummyimage.com/142x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 94,
-		name: "Lynn",
-		ownerName: "Lynn Llop",
-		address: "4 Armistice Pass",
-		areaCode: "40460",
-		rent: 4729,
-		image: "http://dummyimage.com/145x100.png/ff4444/ffffff",
-	},
-	{
-		id: 95,
-		name: "Meggy",
-		ownerName: "Meggy Edmonston",
-		address: "9 Green Ridge Hill",
-		rent: 3701,
-		image: "http://dummyimage.com/236x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 96,
-		name: "Parsifal",
-		ownerName: "Parsifal Cesconi",
-		address: "12 Summerview Street",
-		rent: 2669,
-		image: "http://dummyimage.com/142x100.png/ff4444/ffffff",
-	},
-	{
-		id: 97,
-		name: "Horatio",
-		ownerName: "Horatio Dugmore",
-		address: "1943 Monterey Place",
-		areaCode: "2971",
-		rent: 5597,
-		image: "http://dummyimage.com/210x100.png/5fa2dd/ffffff",
-	},
-	{
-		id: 98,
-		name: "Abdul",
-		ownerName: "Abdul Browell",
-		address: "29 Stuart Terrace",
-		rent: 5589,
-		image: "http://dummyimage.com/133x100.png/cc0000/ffffff",
-	},
-	{
-		id: 99,
-		name: "Fergus",
-		ownerName: "Fergus Runnalls",
-		address: "83061 Vermont Hill",
-		areaCode: "70174",
-		rent: 1312,
-		image: "http://dummyimage.com/174x100.png/ff4444/ffffff",
-	},
-	{
-		id: 100,
-		name: "Cordelie",
-		ownerName: "Cordelie Clarke-Williams",
-		address: "4 Anzinger Point",
-		rent: 5959,
-		image: "http://dummyimage.com/178x100.png/5fa2dd/ffffff",
-	},
-];

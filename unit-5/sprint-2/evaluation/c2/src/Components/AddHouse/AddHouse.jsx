@@ -1,91 +1,135 @@
 import axios from "axios";
-import { useEffect,useState } from "react";
+import { useState } from "react";
 export const AddHouse = () => {
-  const [data, setData] = useState([]);
-  const [formData, setFormData] = useState({
-		id: "",
+	const [formData, setFromData] = useState({
 		name: "",
 		ownerName: "",
 		address: "",
-		areacode: "",
+		areaCode: "",
 		rent: "",
-    image:""
-  });
-  useEffect(() => {
-		getData();
-  }, []);
-  const handleForm = (e) => {
+		bachelor: false,
+		married: false,
+		image: "",
+	});
+
+	const updatedData = (e) => {
+		const { id, value } = e.target;
+		setFromData({
+			...formData,
+			[id]: value,
+		});
+	};
+
+	const updateCheck = (e) => {
+		const { id } = e.target;
+		const value = e.target.checked;
+		setFromData({
+			...formData,
+			[id]: value,
+		});
+	};
+
+	const handleAdd = (e) => {
 		e.preventDefault();
 		axios
 			.post("http://localhost:8080/houses", formData)
-			.then(() =>
-				setFormData({
-					id: "",
+			.then(() => alert(`House is ADDED INTO TABLE`))
+			.finally(() => {
+				setFromData({
 					name: "",
 					ownerName: "",
 					address: "",
-					areacode: "",
+					areaCode: "",
 					rent: "",
+					bachelor: false,
+					married: false,
 					image: "",
-				})
-			)
-			.finally(() => {
-				alert(`user ${formData.ownerName} is created`);
-				getData();
+				});
 			});
-  };
-  console.log(data);
-  const getData = () => {
-		axios
-			.get("http://localhost:8080/houses")
-			.then((res) => setData(res.data));
-  };
-
-  const handleCheckbox = (e) => {
-		const { id } = e.target;
-		const value = e.target.checked;
-		setFormData({
-			...formData,
-			[id]: value,
-		});
-  };
-  const handleOtherData = (e) => {
-		const { id, value } = e.target;
-		setFormData({
-			...formData,
-			[id]: value,
-		});
-  };
-
+	};
 
 	return (
 		<div className="addHouseContainer">
-			<form>
+			<form onSubmit={handleAdd}>
 				<label>name</label>
-				<input type="text" className="name" value={""} required />
+				<input
+					id="name"
+					onChange={updatedData}
+					type="text"
+					className="name"
+					value={formData.name}
+					required
+				/>
 				<br />
 				<label>ownerName</label>
-				<input value={""} type="text" className="ownerName" required />
+				<input
+					id="ownerName"
+					onChange={updatedData}
+					value={formData.ownerName}
+					type="text"
+					className="ownerName"
+					required
+				/>
 				<br />
 				<label>address</label>
-				<input value={""} type="text" className="address" required />
+				<input
+					onChange={updatedData}
+					id="address"
+					type="text"
+					className="address"
+					value={formData.address}
+					required
+				/>
 				<br />
 				<label>areaCode</label>
-				<input value={""} type="text" className="areaCode" required />
+				<input
+					id="areaCode"
+					onChange={updatedData}
+					value={formData.areaCode}
+					type="number"
+					className="areaCode"
+					required
+				/>
 				<br />
 				<label>rent</label>
-				<input value={""} type="text" className="rent" required />
+				<input
+					id="rent"
+					onChange={updatedData}
+					value={formData.rent}
+					type="number"
+					className="rent"
+					requiredd
+				/>
 				<br />
 				<label>preferredTenant</label>
 				<br />
 				<label>bachelor</label>
-				<input checked={""} type="checkbox" className="bachelor" />
+				<input
+					id="bachelor"
+					checked={formData.bachelor}
+					onChange={updateCheck}
+					type="checkbox"
+					className="bachelor"
+				/>
 				<br />
 				<label>married</label>
-				<input checked={""} type="checkbox" className="married" />
+				<input
+					onChange={updateCheck}
+					id="married"
+					checked={formData.married}
+					type="checkbox"
+					className="married"
+				/>
 				<br />
 				<label>image</label>
-				<input value={""} type="text" className="image" required />
+				<input
+					id="image"
+					onChange={updatedData}
+					value={formData.image}
+					type="text"
+					className="image"
+					required
+				/>
 				<br />
 				<input className="submitBtn" type="submit" />
 			</form>
