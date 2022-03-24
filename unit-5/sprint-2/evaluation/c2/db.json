@@ -1,0 +1,50 @@
+{
+  "houses": [
+    {
+      "name": "Niranjan Kumar",
+      "ownerName": "dummmy",
+      "Address": "dummy",
+      "areaCode": "dummy-217",
+      "rent": "100000",
+      "preferredtenants": "on",
+      "married": "on",
+      "image": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2015%2F04%2F23%2F22%2F00%2Ftree-736885__480.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&tbnid=DH7p1w2o_fIU8M&vet=12ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ..i&docid=Ba_eiczVaD9-zM&w=771&h=480&q=images&client=firefox-b-d&ved=2ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ",
+      "id": 3
+    },
+    {
+      "name": "Niranjan Kumar",
+      "ownerName": "dummmy",
+      "Address": "dummy",
+      "areaCode": "dummy-217",
+      "rent": "100000",
+      "preferredTenants": "",
+      "married": "on",
+      "image": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2015%2F04%2F23%2F22%2F00%2Ftree-736885__480.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&tbnid=DH7p1w2o_fIU8M&vet=12ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ..i&docid=Ba_eiczVaD9-zM&w=771&h=480&q=images&client=firefox-b-d&ved=2ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ",
+      "preferredtenanTs": "on",
+      "id": 4
+    },
+    {
+      "name": "Niranjan Kumar",
+      "ownerName": "dummmy",
+      "address": "dummy",
+      "areaCode": "dummy-217",
+      "rent": "100000",
+      "preferredTenants": "",
+      "married": "on",
+      "image": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2015%2F04%2F23%2F22%2F00%2Ftree-736885__480.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&tbnid=DH7p1w2o_fIU8M&vet=12ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ..i&docid=Ba_eiczVaD9-zM&w=771&h=480&q=images&client=firefox-b-d&ved=2ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ",
+      "preferredtenanTs": "on",
+      "id": 5
+    },
+    {
+      "name": "Niranjan Kumar",
+      "ownerName": "dummmy",
+      "address": "dummy",
+      "areaCode": "dummy-217",
+      "rent": "100000",
+      "preferredTenants": "on",
+      "married": "on",
+      "image": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2015%2F04%2F23%2F22%2F00%2Ftree-736885__480.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&tbnid=DH7p1w2o_fIU8M&vet=12ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ..i&docid=Ba_eiczVaD9-zM&w=771&h=480&q=images&client=firefox-b-d&ved=2ahUKEwjtvaeu2N72AhU4X2wGHffSC9AQMygBegUIARDVAQ",
+      "id": 6
+    }
+  ]
+}
