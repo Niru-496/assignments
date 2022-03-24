@@ -13,6 +13,9 @@ export const AllRoutes = () => {
         <Route exact path="/" element={<Home />} />
         {/* Create other routes here: Section, bookdetailspage and 404 */}
         {/*  */}
+        <Route path="books/:id" element={<BookDetailsPage/>}/>
+        <Route path="/section" element={<Section />}/>
+        <Route path="/fiction" element={<NotFound/>}/>
       </Routes>
     </>
   );
