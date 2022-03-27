@@ -11,9 +11,9 @@ export const BookDetailsPage = () => {
 
   const {id} = useParams();
   useEffect(() => {
-    axios.get(`http://localhost:8080/books/${id}`).then(response => {
+    axios.get(`http://localhost:8080/books/${id}`).then(res => {
 
-    setBooks([response.data])
+    setBooks([res.data])
     })
   },[])
 

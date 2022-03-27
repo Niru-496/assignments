@@ -10,12 +10,16 @@ export const Section = () => {
   // Get books for only this section and show
   //   Everything else is same as Home page
 const [books,setBooks] = useState([]);
+const handleSort = (a) => {
+  const m = a.sort((c,b) => c-b)
+  setBooks(m)
+}
 
 const {section} = useParams();
 useEffect(() => {
 axios.get(`http://localhost:8080/books/${section}`).then((response) => {
   setBooks([response.data])
-  console.log(response.data)
+  // console.log(response.data)
 })
 },[])
   const Main = styled.div`
@@ -23,19 +27,18 @@ axios.get(`http://localhost:8080/books/${section}`).then((response) => {
   `;
 
   return (
-    <>
-      <h2 style={{ textAlign: "center" }}>
-        {
-          //   Show section name here
-         books.section
-        
-        }
-      </h2>
-      <SortAndFilterButtons handleSort={"books.sort((a,b)=>a-b)"} />
+		<>
+			<h2 style={{ textAlign: "center" }}>
+				{
+					//   Show section name here
+					books.section
+				}
+			</h2>
+			<SortAndFilterButtons handleSort={handleSort} />
 
-      <Main className="sectionContainer">
-        {/* SHow same BookCard component here, just like homepage but with books only belong to this Section */}
-      </Main>
-    </>
+			<Main className="sectionContainer">
+				{/* SHow same BookCard component here, just like homepage but with books only belong to this Section */}
+			</Main>
+		</>
   );
 };

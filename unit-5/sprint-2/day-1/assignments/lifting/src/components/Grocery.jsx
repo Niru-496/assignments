@@ -1,11 +1,15 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 
 import { Todoinput } from "./GroceryInput";
 import { TodoItem } from "./GroceryList";
 import { v4 as uuidv4 } from 'uuid';
-
+import {axios} from "axios"
 export const Todo = () => {
 	const [todos, settodo] = useState([]);
+
+    useEffect(()=>{
+        axios.f
+    })
 
 
     const addTodo = (data) => {
