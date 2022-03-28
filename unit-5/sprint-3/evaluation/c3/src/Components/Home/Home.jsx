@@ -1,57 +1,66 @@
-import styled from 'styled-components'
-import {useState,useEffect} from "react";
-import axios from 'axios';
-import {Link} from "react-router-dom";
-
 import { BookCard } from "../BookCard/BookCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { SortAndFilterButtons } from "../SortAndFilterButtons/SortAndFilterButtons";
-
+import styled from "styled-components";
 export const Home = () => {
-const [book,setBook] = useState([]);
-
-useEffect(() => {
-  axios.get("http://localhost:8080/books").then((response) => {
-    setBook([...response.data]);
-
-    console.log(response.data);
-  })
-},[])
-
-
+  // get all books when user lands on the page
+  // populate them as mentioned below
+  const [allData, setAllData] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/books")
+      .then((res) => setAllData(res.data));
+  }, []);
+  const sorting = (order) => {
+    if (order === "tA") {
+      const d1 = allData.sort((a, b) => {
+        if (a.title < b.title) {
+          return -1;
+        }
+      });
+      setAllData([...d1]);
+    } else if (order === "tD") {
+      const d1 = allData.sort((a, b) => {
+        if (a.title > b.title) {
+          return -1;
+        }
+      });
+      setAllData([...d1]);
+    } else if (order === "pA") {
+      const d1 = allData.sort((a, b) => {
+        return a.price - b.price;
+      });
+      setAllData([...d1]);
+    } else if (order === "pD") {
+      const d1 = allData.sort((a, b) => {
+        return b.price - a.price;
+      });
+      setAllData([...d1]);
+    }
+  };
   const Main = styled.div`
     /* Apply some responsive styling to children */
-    display: flex;
-    background-color:teal;
+    display: grid;
+    grid-template-columns: repeat(4, 250px);
+    grid-gap: 20px;
   `;
 
   return (
     <div className="homeContainer">
       <h2 style={{ textAlign: "center" }}>Home</h2>
-      <SortAndFilterButtons
-        handleSort={
-          "give handleSort function to this component, that sorts books"
-        }
-      />
+      <SortAndFilterButtons handleSort={sorting} />
 
       <Main className="mainContainer">
-        {/*
+        {/* 
             Iterate over books that you get from network
             populate a <BookCard /> component
-            pass down books id, imageUrl, title, price and anything else that you want to
+            pass down books id, imageUrl, title, price and anything else that you want to 
             show in books Card.
         */}
-        {
-          book.map((el)=>{
-            return <Link to ={`/books/${el.id}`} kry={el.id}>
-              <img src={el.imageUrl}/>
-              <h1>{el.title}</h1>
-              <h4>{el.price}</h4>
-              <h3>{el.description}</h3>
-
-            </Link>
-          })
-        }
-
+        {allData.map((el) => {
+          return <BookCard {...el} />;
+        })}
       </Main>
     </div>
   );

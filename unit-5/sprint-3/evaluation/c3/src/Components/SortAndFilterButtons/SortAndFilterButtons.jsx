@@ -1,10 +1,6 @@
 export const SortAndFilterButtons = ({ handleSort }) => {
   return (
-    <div className="sortButtons" style={{
-      display: 'flex',
-      justifyContent: "space-around",
-      backgroundColor:"green",
-    }}>
+    <div className="sortButtons">
       {/*
         Create 4 sorting buttons here to sort by following criteria:
 
@@ -18,10 +14,18 @@ export const SortAndFilterButtons = ({ handleSort }) => {
         and sort the data.
 
       */}
-      <button onClick={handleSort}>Sort by Title Asc</button>
-      <button onClick={handleSort}>Sort by Title Dsc</button>
-      <button onClick={handleSort}>Sort by Price Asc</button>
-      <button onClick={handleSort}>Sort by Price Dsc</button>
+      <button className="sortByTitleAsc" onClick={() => handleSort("tA")}>
+        sort title in Ascending order
+      </button>
+      <button className="sortByTitleDesc" onClick={() => handleSort("tD")}>
+        sort title in Descending order
+      </button>
+      <button className="sortByPriceAsc" onClick={() => handleSort("pA")}>
+        sort price asending order
+      </button>
+      <button className="sortByPriceDesc" onClick={() => handleSort("pD")}>
+        sort price descending order
+      </button>
     </div>
   );
 };
